@@ -6,14 +6,17 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 10f;
-    
+
     [SerializeField]
     private GameObject _prefabLaser;
-    private Vector3 _laserOffset = new Vector3(0,.7f,0);    
-    
+    private Vector3 _laserOffset = new Vector3(0, .7f, 0);
+
     [SerializeField]
-    private float _fireRate = 2f;   
+    private float _fireRate = 2f;
     private float _fireTimer = -1f;
+
+    [SerializeField]
+    private int _lives = 3;
  
     // Start is called before the first frame update
     void Start()
@@ -72,5 +75,27 @@ public class Player : MonoBehaviour
     {
         _fireTimer = Time.time + _fireRate;
         Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy") 
+        {
+
+            Damage(1);
+        }
+    }
+
+    public void Damage(int dmg) 
+    {
+        _lives--;
+        if (_lives <= 0) 
+        {
+            Kill();
+        }
+    }
+    public void Kill() 
+    {
+        Destroy(gameObject);
     }
 }

@@ -33,4 +33,15 @@ public class Enemy : MonoBehaviour
         _xPos = Random.RandomRange(-9.5f, 9.5f);
         transform.position = new Vector3(_xPos, _upperbound, 0);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Laser") 
+        {
+            Destroy(gameObject);
+        }
+        if (other.tag == "Player") 
+        {
+            Destroy(gameObject);
+        }
+    }
 }
