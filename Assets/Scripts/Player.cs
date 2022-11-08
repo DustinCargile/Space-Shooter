@@ -18,9 +18,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
  
+    private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
+        _spawnManager = FindObjectOfType<SpawnManager>();
         //take the current position = starting position(0,0,0)
         transform.position = new Vector3(0, 0, 0);
         Debug.Log(Screen.width + "," + Screen.height);
@@ -96,6 +98,15 @@ public class Player : MonoBehaviour
     }
     public void Kill() 
     {
+        //Communicate with SpawnManager
+        if (_spawnManager != null)
+        {
+            _spawnManager.OnPlayerDeath();
+        }
+        else 
+        {
+            Debug.LogError("Spawn Manager did not load!");
+        }
         Destroy(gameObject);
     }
 }
