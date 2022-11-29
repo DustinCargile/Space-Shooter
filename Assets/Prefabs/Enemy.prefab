@@ -112,6 +112,7 @@ MonoBehaviour:
   _speed: 5
   _upperbound: 6.5
   _lowerbound: -6.5
+  _timeDelay: 0.000003
 --- !u!54 &8600896433214718816
 Rigidbody:
   m_ObjectHideFlags: 0
