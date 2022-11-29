@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
         _xPos = Random.RandomRange(-9.5f, 9.5f);
         transform.position = new Vector3(_xPos, _upperbound, 0);
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Laser") 
         {

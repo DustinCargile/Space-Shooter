@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
         Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Enemy") 
         {
