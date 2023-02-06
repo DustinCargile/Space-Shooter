@@ -13,17 +13,18 @@ public class Laser : MonoBehaviour
         
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
       
-        if (transform.position.y > 6f) 
+        if (transform.position.y > 10f) 
         {
+            
             Destroy(gameObject);
         }
         
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Enemy") 
+        /*if (other.tag == "Enemy") 
         {
             Destroy (gameObject);
-        }
+        }*/
     }
 }

@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 10f;
+    private float _speed = 10f, _tripleShotCooldown = 5f;
 
     [SerializeField]
-    private GameObject _prefabLaser;
+    private GameObject _prefabLaser, _prefabTriple;
     private Vector3 _laserOffset = new Vector3(0, .7f, 0);
+    private Vector3 _tripleshotOffset = new Vector3(0, 3.5f, 0);
 
     [SerializeField]
     private float _fireRate = 2f;
@@ -17,7 +18,17 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private int _lives = 3;
- 
+
+    [SerializeField]
+    private bool _isTripleShotEnabled = false;
+    
+    private float upperbounds = 0, //put global
+                lowerbounds = -5.02f,
+                leftbounds = -11.88f,
+                rightbounds = 11.88f;
+
+    [SerializeField]
+    private Transform LaserContainer;
     private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
@@ -47,10 +58,7 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        float upperbounds = 0,
-                lowerbounds = -5.02f,
-                leftbounds = -11.88f,
-                rightbounds = 11.88f;
+        
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
@@ -76,16 +84,25 @@ public class Player : MonoBehaviour
     private void FireLaser() 
     {
         _fireTimer = Time.time + _fireRate;
-        Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
+        GameObject laser;
+        if (_isTripleShotEnabled)
+        {
+            laser = Instantiate(_prefabTriple, transform.position + _tripleshotOffset, Quaternion.identity);
+        }
+        else 
+        {
+            laser = Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
+        }
+        laser.transform.SetParent(LaserContainer);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Enemy") 
+        /*if (other.tag == "Enemy") 
         {
 
             Damage(1);
-        }
+        }*/
     }
 
     public void Damage(int dmg) 
@@ -95,6 +112,11 @@ public class Player : MonoBehaviour
         {
             Kill();
         }
+    }
+    public void setTripleShot_Enabled()
+    {
+        _isTripleShotEnabled = true;
+        StartCoroutine(TripleShotPowerDownRoutine(_tripleShotCooldown));
     }
     public void Kill() 
     {
@@ -108,5 +130,10 @@ public class Player : MonoBehaviour
             Debug.LogError("Spawn Manager did not load!");
         }
         Destroy(gameObject);
+    }
+    IEnumerator TripleShotPowerDownRoutine(float timeInSeconds) 
+    {
+        yield return new WaitForSeconds(timeInSeconds);
+        _isTripleShotEnabled = false;
     }
 }

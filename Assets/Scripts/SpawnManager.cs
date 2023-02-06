@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private float _waitTime = 5;
     [SerializeField]
-    GameObject _enemyPrefab;
+    GameObject[] _enemyPrefab;
     [SerializeField]
     private GameObject _enemyContainer;
 
@@ -35,8 +35,9 @@ public class SpawnManager : MonoBehaviour
         //yield wait for 5 seconds
         while (!_stopSpawning) 
         {
+            int r = Random.Range(0,_enemyPrefab.Length);
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            GameObject spawnedEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            GameObject spawnedEnemy = Instantiate(_enemyPrefab[r], posToSpawn, Quaternion.identity);
             spawnedEnemy.transform.SetParent(_enemyContainer.transform);
             yield return new WaitForSeconds(_waitTime);
             

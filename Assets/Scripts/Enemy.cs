@@ -55,17 +55,20 @@ public class Enemy : MonoBehaviour
     }
     private void getNewPos() 
     {
-        _xPos = Random.RandomRange(-9.5f, 9.5f);
+        _xPos = Random.Range(-9.5f, 9.5f);
         transform.position = new Vector3(_xPos, _upperbound, 0);
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Laser") 
         {
-            Destroy(gameObject);
+            Destroy(other.gameObject);
+            Destroy(gameObject); //use only the player or the enemy to detect the other ones.
         }
         if (other.tag == "Player") 
         {
+            Player player = other.GetComponent<Player>();
+            player.Damage(1);
             Destroy(gameObject);
         }
     }
