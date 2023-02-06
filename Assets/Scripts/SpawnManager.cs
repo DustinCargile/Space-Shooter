@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private float _waitTime = 5;
     [SerializeField]
-    GameObject[] _enemyPrefab;
+    GameObject[] _enemyPrefab, _powerupPrefab;
     [SerializeField]
     private GameObject _enemyContainer;
 
@@ -15,7 +15,8 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPowerupRoutine());
     }
 
     // Update is called once per frame
@@ -23,19 +24,12 @@ public class SpawnManager : MonoBehaviour
     {
         
     }
-
-    //Spawn an enemy every 5 seconds
-    //Create a coroutine of type IEnumerator -- Yield Events
-    //while loop
-
-    IEnumerator SpawnRoutine()
+    IEnumerator SpawnEnemyRoutine()
     {
-        //while loop(infinite loop)
-        //Instantiate enemy prefab
-        //yield wait for 5 seconds
+        int r;
         while (!_stopSpawning) 
         {
-            int r = Random.Range(0,_enemyPrefab.Length);
+            r = Random.Range(0,_enemyPrefab.Length);
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
             GameObject spawnedEnemy = Instantiate(_enemyPrefab[r], posToSpawn, Quaternion.identity);
             spawnedEnemy.transform.SetParent(_enemyContainer.transform);
@@ -44,7 +38,20 @@ public class SpawnManager : MonoBehaviour
         }
         
     }
+    IEnumerator SpawnPowerupRoutine() 
+    {
+        int r;
+        while (!_stopSpawning)
+        {
+            
+            yield return new WaitForSeconds(Random.Range(3f,8f));
+            r = Random.Range(0, _powerupPrefab.Length);
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            Instantiate(_powerupPrefab[r], posToSpawn, Quaternion.identity);
+            
 
+        }
+    }
     public void OnPlayerDeath() 
     {
         _stopSpawning = true;

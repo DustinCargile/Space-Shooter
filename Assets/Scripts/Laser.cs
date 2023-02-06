@@ -6,6 +6,8 @@ public class Laser : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 10f;
+    [SerializeField]
+    private GameObject _laserContainer;
     
     // Update is called once per frame
     void Update()
@@ -15,16 +17,11 @@ public class Laser : MonoBehaviour
       
         if (transform.position.y > 10f) 
         {
-            
+           
             Destroy(gameObject);
+          
         }
         
     }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        /*if (other.tag == "Enemy") 
-        {
-            Destroy (gameObject);
-        }*/
-    }
+    
 }

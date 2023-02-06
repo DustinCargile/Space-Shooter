@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 10f, _tripleShotCooldown = 5f;
+    private float _speed = 10f, _tripleShotCooldown = 0;
 
     [SerializeField]
     private GameObject _prefabLaser, _prefabTriple;
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool _isTripleShotEnabled = false;
     
-    private float upperbounds = 0, //put global
+    private float upperbounds = 0,
                 lowerbounds = -5.02f,
                 leftbounds = -11.88f,
                 rightbounds = 11.88f;
@@ -49,10 +49,6 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
-
-
-
-
     }
     private void Calculate_Movement()
     {
@@ -96,15 +92,6 @@ public class Player : MonoBehaviour
         laser.transform.SetParent(LaserContainer);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        /*if (other.tag == "Enemy") 
-        {
-
-            Damage(1);
-        }*/
-    }
-
     public void Damage(int dmg) 
     {
         _lives--;
@@ -115,12 +102,17 @@ public class Player : MonoBehaviour
     }
     public void setTripleShot_Enabled()
     {
-        _isTripleShotEnabled = true;
-        StartCoroutine(TripleShotPowerDownRoutine(_tripleShotCooldown));
+        if (!_isTripleShotEnabled) 
+        {            
+            _isTripleShotEnabled = true;
+            StartCoroutine(TripleShotPowerDownRoutine(1f));
+        }
+        
+        _tripleShotCooldown += 5f;
+        
     }
     public void Kill() 
     {
-        //Communicate with SpawnManager
         if (_spawnManager != null)
         {
             _spawnManager.OnPlayerDeath();
@@ -133,7 +125,15 @@ public class Player : MonoBehaviour
     }
     IEnumerator TripleShotPowerDownRoutine(float timeInSeconds) 
     {
-        yield return new WaitForSeconds(timeInSeconds);
-        _isTripleShotEnabled = false;
+        while (_isTripleShotEnabled) 
+        {
+            yield return new WaitForSeconds(timeInSeconds);
+            _tripleShotCooldown--;
+            if (_tripleShotCooldown <= 0)
+            {
+                _tripleShotCooldown = 0;
+                _isTripleShotEnabled = false;
+            }
+        }
     }
 }

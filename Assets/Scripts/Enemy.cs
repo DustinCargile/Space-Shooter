@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour
     void Start()
     {
          getNewPos();
-        //StartCoroutine(moveRoutine());
     }
 
     // Update is called once per frame
@@ -70,18 +69,6 @@ public class Enemy : MonoBehaviour
             Player player = other.GetComponent<Player>();
             player.Damage(1);
             Destroy(gameObject);
-        }
-    }
-
-    IEnumerator moveRoutine() 
-    {
-        while (true) 
-        {
-            MoveDown();
-            yield return new WaitForSeconds(_timeDelay);
-            MoveLeft();
-            yield return new WaitForSeconds(_timeDelay);
-            MoveRight();
         }
     }
 }
