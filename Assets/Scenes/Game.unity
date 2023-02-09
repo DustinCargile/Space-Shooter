@@ -250,6 +250,8 @@ MonoBehaviour:
   - {fileID: 1416475221595539069, guid: 0751c9319d43c4c4db4f768bf3d5394f, type: 3}
   _powerupPrefab:
   - {fileID: 3935492248638113234, guid: 4ede16afb91940d4882fb191fab2ed0c, type: 3}
+  _powerupSpawnMin: 3
+  _powerupSpawnMax: 8
   _enemyContainer: {fileID: 1837905237}
 --- !u!4 &547275015
 Transform:
