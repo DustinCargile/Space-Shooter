@@ -250,6 +250,7 @@ MonoBehaviour:
   - {fileID: 1416475221595539069, guid: 0751c9319d43c4c4db4f768bf3d5394f, type: 3}
   _powerupPrefab:
   - {fileID: 3935492248638113234, guid: 4ede16afb91940d4882fb191fab2ed0c, type: 3}
+  - {fileID: 6596633691297458768, guid: ced41dcdd91e55344994dbdafa2eb088, type: 3}
   _powerupSpawnMin: 3
   _powerupSpawnMax: 8
   _enemyContainer: {fileID: 1837905237}
@@ -406,8 +407,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1907224161
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 351f30ffb741fd643b82bde90a222699, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -467,11 +468,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 10
   _tripleShotCooldown: 0
+  _speedBoostCooldown: 0
   _prefabLaser: {fileID: 6998245513318669264, guid: 5f2f4b0d93d8ca44fa4f42e6e0c9b133, type: 3}
   _prefabTriple: {fileID: 2261851733279261800, guid: 23db77dae76448c428a520e2625e05d7, type: 3}
   _fireRate: 0.05
   _lives: 3
+  _speedBoost: 20
   _isTripleShotEnabled: 0
+  _isSpeedBoostEnabled: 0
   LaserContainer: {fileID: 1095731946}
 --- !u!212 &987245021
 SpriteRenderer:
@@ -510,8 +514,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -110222945
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 1b4a8fdd39d3a45d0a9ee484ad6800ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
