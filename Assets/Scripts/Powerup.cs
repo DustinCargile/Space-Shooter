@@ -50,6 +50,7 @@ public class Powerup : MonoBehaviour
                     break;
             
                 case 2:
+                    player.setShieldActive();
                     Debug.Log("Collected Shields");
                     break;
                 default:

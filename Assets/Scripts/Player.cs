@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private float _speed = 10f, _tripleShotCooldown = 0, _speedBoostCooldown = 0;
 
     [SerializeField]
-    private GameObject _prefabLaser, _prefabTriple;
+    private GameObject _prefabLaser, _prefabTriple, _shieldVisualizer;
     private Vector3 _laserOffset = new Vector3(0, .7f, 0);
     private Vector3 _tripleshotOffset = new Vector3(0, 3.5f, 0);
 
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speedBoost = 3.5f;
     [SerializeField]
-    private bool _isTripleShotEnabled = false, _isSpeedBoostEnabled = false;
+    private bool _isTripleShotEnabled = false, _isSpeedBoostEnabled = false, _isShieldsActive = false;
     
     private float upperbounds = 0,
                 lowerbounds = -5.02f,
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
         //take the current position = starting position(0,0,0)
-        transform.position = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0, -4f, 0);
         Debug.Log(Screen.width + "," + Screen.height);
     }
 
@@ -103,6 +103,12 @@ public class Player : MonoBehaviour
 
     public void Damage(int dmg) 
     {
+        if (_isShieldsActive) 
+        {
+            _isShieldsActive = false;
+            _shieldVisualizer.SetActive(false);
+            return;
+        }
         _lives--;
         if (_lives <= 0) 
         {
@@ -131,6 +137,11 @@ public class Player : MonoBehaviour
         }
         _speedBoostCooldown += 5;
 
+    }
+    public void setShieldActive() 
+    {
+        _isShieldsActive = true;
+        _shieldVisualizer.SetActive(true);
     }
     public void Kill() 
     {
