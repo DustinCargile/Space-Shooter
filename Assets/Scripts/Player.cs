@@ -17,7 +17,10 @@ public class Player : MonoBehaviour
     private float _fireTimer = -1f;
 
     [SerializeField]
-    private int _lives = 3;
+    private int _lives = 3, _score = 0;
+
+    [SerializeField]
+    private UIManager ui;
 
     [SerializeField]
     private float _speedBoost = 3.5f;
@@ -36,6 +39,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
+        ui = FindObjectOfType<UIManager>();
         //take the current position = starting position(0,0,0)
         transform.position = new Vector3(0, -4f, 0);
         Debug.Log(Screen.width + "," + Screen.height);
@@ -110,11 +114,21 @@ public class Player : MonoBehaviour
             return;
         }
         _lives--;
+        ui.UpdateLives(_lives);
         if (_lives <= 0) 
         {
             Kill();
         }
     }
+    public void AdjustScore(int val) 
+    {
+        _score += val;
+        ui.SetScore(_score);
+
+    }
+
+
+    #region Powerups
     public void setTripleShot_Enabled()
     {
         if (!_isTripleShotEnabled) 
@@ -143,21 +157,10 @@ public class Player : MonoBehaviour
         _isShieldsActive = true;
         _shieldVisualizer.SetActive(true);
     }
-    public void Kill() 
+
+    IEnumerator TripleShotPowerDownRoutine(float timeInSeconds)
     {
-        if (_spawnManager != null)
-        {
-            _spawnManager.OnPlayerDeath();
-        }
-        else 
-        {
-            Debug.LogError("Spawn Manager did not load!");
-        }
-        Destroy(gameObject);
-    }
-    IEnumerator TripleShotPowerDownRoutine(float timeInSeconds) 
-    {
-        while (_isTripleShotEnabled) 
+        while (_isTripleShotEnabled)
         {
             yield return new WaitForSeconds(timeInSeconds);
             _tripleShotCooldown--;
@@ -176,10 +179,24 @@ public class Player : MonoBehaviour
             _speedBoostCooldown--;
             if (_speedBoostCooldown <= 0)
             {
-                _speedBoostCooldown = 0;                
+                _speedBoostCooldown = 0;
                 _isSpeedBoostEnabled = false;
-               
+
             }
         }
     }
+    #endregion
+    public void Kill() 
+    {
+        if (_spawnManager != null)
+        {
+            _spawnManager.OnPlayerDeath();
+        }
+        else 
+        {
+            Debug.LogError("Spawn Manager did not load!");
+        }
+        Destroy(gameObject);
+    }
+
 }

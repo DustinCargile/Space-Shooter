@@ -16,9 +16,12 @@ public class Enemy : MonoBehaviour
 
     private float _leftbound = -9.5f,
                   _rightbound = 9.5f;
+    [SerializeField]
+    private Player _player;
     // Start is called before the first frame update
     void Start()
     {
+         _player = FindObjectOfType<Player>();
          getNewPos();
     }
 
@@ -27,7 +30,7 @@ public class Enemy : MonoBehaviour
     {
         MoveDown();
     }
-    private void MoveLeft() 
+   /* private void MoveLeft() 
     {
         transform.Translate(-Vector3.left * _speed * Time.deltaTime);
         if (Mathf.Abs(transform.position.x) > _rightbound) 
@@ -42,7 +45,7 @@ public class Enemy : MonoBehaviour
         {
             getNewPos();
         }
-    }
+    }*/
     private void MoveDown() 
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -62,13 +65,19 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Laser") 
         {
             Destroy(other.gameObject);
-            Destroy(gameObject); //use only the player or the enemy to detect the other ones.
+            if (_player == null) { Debug.Log("Could not find Player Object!"); } else 
+            { _player.AdjustScore(10); }
+            Kill();
         }
         if (other.tag == "Player") 
         {
             Player player = other.GetComponent<Player>();
             player.Damage(1);
-            Destroy(gameObject);
+            Kill();
         }
+    }
+    private void Kill() 
+    {
+        Destroy(gameObject);
     }
 }
