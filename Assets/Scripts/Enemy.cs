@@ -18,10 +18,17 @@ public class Enemy : MonoBehaviour
                   _rightbound = 9.5f;
     [SerializeField]
     private Player _player;
+
+    private BoxCollider2D _boxCollider;
+
+    private Animator _animator;
+    private bool _isDead = false;
     // Start is called before the first frame update
     void Start()
     {
          _player = FindObjectOfType<Player>();
+        _animator = GetComponent<Animator>();
+        _boxCollider = GetComponent<BoxCollider2D>();
          getNewPos();
     }
 
@@ -49,7 +56,7 @@ public class Enemy : MonoBehaviour
     private void MoveDown() 
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
-        if (transform.position.y < _lowerbound)
+        if (transform.position.y < _lowerbound && !_isDead)
         {
             getNewPos();
         }
@@ -78,6 +85,32 @@ public class Enemy : MonoBehaviour
     }
     private void Kill() 
     {
+        if (_animator == null)
+        {
+            Debug.Log("Could not load animator for Enemy");
+        }
+        else 
+        {
+            _animator.SetTrigger("Destroy");
+        }
+        if (_boxCollider == null)
+        {
+            Debug.Log("Box Collider could not be loaded!");
+        }
+        else 
+        {
+            _boxCollider.enabled = false;
+        }
+
+        StartCoroutine(DestroyRoutine());
+        _isDead = true;
+        _speed = 1;
+        
+    }
+
+    IEnumerator DestroyRoutine() 
+    {
+        yield return new WaitForSeconds(2.41f);
         Destroy(gameObject);
     }
 }
