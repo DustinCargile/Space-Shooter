@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     private int _lives = 3, _score = 0;
 
     [SerializeField]
+    GameObject _leftEngineVisual, _rightEngineVisual;
+    [SerializeField]
     private UIManager ui;
 
     [SerializeField]
@@ -125,6 +127,30 @@ public class Player : MonoBehaviour
             return;
         }
         _lives--;
+        int rnd = Random.Range(0, 2);
+        Debug.Log("RND is " + rnd);
+        if (rnd == 0)
+        {
+            if (!_leftEngineVisual.active)
+            {
+                _leftEngineVisual.SetActive(true);
+            }
+            else 
+            {
+                _rightEngineVisual.SetActive(true);
+            }   
+        }
+        if (rnd == 1)
+        {
+            if (!_rightEngineVisual.active)
+            {
+                _rightEngineVisual.SetActive(true);
+            }
+            else
+            {
+                _leftEngineVisual.SetActive(true);
+            }
+        }
         ui.UpdateLives(_lives);
         if (_lives <= 0) 
         {
