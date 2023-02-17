@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator SpawnEnemyRoutine()
     {
+        //add a yield return to delay spawn start
         int r;
         while (!_stopSpawning) 
         {
@@ -41,6 +42,7 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator SpawnPowerupRoutine() 
     {
+        //add a yield return to delay spawn start
         int r;
         while (!_stopSpawning)
         {
