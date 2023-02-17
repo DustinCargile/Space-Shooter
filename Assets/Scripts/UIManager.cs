@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     private GameManager _gameManager;
 
     [SerializeField]
-    private TextMeshProUGUI _gameOverText;
+    private TextMeshProUGUI _gameOverText, _restartText;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
         _score = 0;
         UpdateScore();
         _gameOverText.gameObject.SetActive(false);
+        _restartText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -71,6 +72,7 @@ public class UIManager : MonoBehaviour
         }
         _gameManager.GameOver();
         _isGameOver = true;
+        _restartText.gameObject.SetActive(true);
         StartCoroutine(GameOverFlickerRoutine());
     }
     IEnumerator GameOverFlickerRoutine() 

@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     {
          _player = FindObjectOfType<Player>();
         _animator = GetComponent<Animator>();
-        _boxCollider = GetComponent<BoxCollider2D>();
+       _boxCollider = GetComponent<BoxCollider2D>();
          getNewPos();
     }
 
@@ -97,20 +97,15 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Box Collider could not be loaded!");
         }
-        else 
+        else
         {
             _boxCollider.enabled = false;
         }
 
-        StartCoroutine(DestroyRoutine());
+        
         _isDead = true;
         _speed = 1;
+        Destroy(gameObject, 2.41f);
         
-    }
-
-    IEnumerator DestroyRoutine() 
-    {
-        yield return new WaitForSeconds(2.41f);
-        Destroy(gameObject);
     }
 }
