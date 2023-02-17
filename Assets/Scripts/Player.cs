@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Transform LaserContainer;
     private SpawnManager _spawnManager;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -110,7 +111,17 @@ public class Player : MonoBehaviour
         if (_isShieldsActive) 
         {
             _isShieldsActive = false;
-            _shieldVisualizer.SetActive(false);
+            Animator _animator = _shieldVisualizer.gameObject.GetComponent<Animator>();
+            if (_animator == null)
+            {
+                Debug.Log("Could not find the Shield Animator!");
+            }
+            else 
+            {
+                _animator.SetTrigger("Destroy");
+               // _shieldVisualizer.transform.SetParent(null);
+                StartCoroutine(DisableShield());
+            }
             return;
         }
         _lives--;
@@ -119,6 +130,13 @@ public class Player : MonoBehaviour
         {
             Kill();
         }
+    }
+    IEnumerator DisableShield() 
+    {
+        yield return new WaitForSeconds(.25f);
+        _shieldVisualizer.SetActive(false);
+        //_shieldVisualizer.transform.SetParent(this.transform);
+        //_shieldVisualizer.transform.position = new Vector3(0, 0, 0);
     }
     public void AdjustScore(int val) 
     {
