@@ -13,12 +13,18 @@ public class Asteroid : MonoBehaviour
     private CircleCollider2D _collider;
     private SpriteRenderer _renderer;
     private SpawnManager _spawnManager;
+
+    [SerializeField]
+    private AudioClip _explosionSound;
+    private AudioSource _audioSource;
     // Start is called before the first frame update
     void Start()
     {
         _collider = GetComponent<CircleCollider2D>();
         _renderer = GetComponent<SpriteRenderer>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _audioSource = GetComponent<AudioSource>();
+        //null checks???
         
     }
 
@@ -35,6 +41,7 @@ public class Asteroid : MonoBehaviour
             Destroy(other.gameObject);
             Instantiate(_explosionPrefab, this.transform);
             StartCoroutine(AsteroidExplodeRoutine());
+            _audioSource.PlayOneShot(_explosionSound);
         }
 
     }

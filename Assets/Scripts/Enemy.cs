@@ -23,12 +23,18 @@ public class Enemy : MonoBehaviour
 
     private Animator _animator;
     private bool _isDead = false;
+
+    [SerializeField]
+    private AudioClip _explosionSound;
+    private AudioSource _audioSource;
     // Start is called before the first frame update
     void Start()
     {
          _player = FindObjectOfType<Player>();
         _animator = GetComponent<Animator>();
        _boxCollider = GetComponent<BoxCollider2D>();
+        _audioSource = GetComponent<AudioSource>();
+        //null checks???
          getNewPos();
     }
 
@@ -105,6 +111,7 @@ public class Enemy : MonoBehaviour
         
         _isDead = true;
         _speed = 1;
+        _audioSource.PlayOneShot(_explosionSound);
         Destroy(gameObject, 2.41f);
         
     }

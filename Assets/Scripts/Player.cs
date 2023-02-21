@@ -17,6 +17,11 @@ public class Player : MonoBehaviour
     private float _fireTimer = -1f;
 
     [SerializeField]
+    private AudioClip _laserSound,_expolsionSound,_powerupSound;
+    [SerializeField]
+    private AudioSource _audioSource;
+
+    [SerializeField]
     private int _lives = 3, _score = 0;
 
     [SerializeField]
@@ -52,6 +57,8 @@ public class Player : MonoBehaviour
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
         ui = FindObjectOfType<UIManager>();
+        _audioSource = GetComponent<AudioSource>();
+        //null checks????
         //take the current position = starting position(0,0,0)
         transform.position = new Vector3(0, -4f, 0);
         Debug.Log(Screen.width + "," + Screen.height);
@@ -115,6 +122,9 @@ public class Player : MonoBehaviour
             laser = Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
         }
         laser.transform.SetParent(LaserContainer);
+
+        _audioSource.PlayOneShot(_laserSound);
+        
     }
 
     public void Damage(int dmg)
@@ -203,7 +213,7 @@ public class Player : MonoBehaviour
         }
         
         _tripleShotCooldown += 5f;
-        
+        _audioSource.PlayOneShot(_powerupSound);
     }
     public void setSpeed_Enabled() 
     {
@@ -214,7 +224,7 @@ public class Player : MonoBehaviour
             
         }
         _speedBoostCooldown += 5;
-
+        _audioSource.PlayOneShot(_powerupSound);
     }
     public void setShieldActive() 
     {
@@ -230,6 +240,8 @@ public class Player : MonoBehaviour
             shieldLevelUp();
             
         }
+        //powerup playClipAtPoint
+        _audioSource.PlayOneShot(_powerupSound);
     }
     public void shieldLevelUp() 
     {
@@ -315,6 +327,7 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Spawn Manager did not load!");
         }
+        _audioSource.PlayOneShot(_expolsionSound);
         Destroy(gameObject);
     }
 
