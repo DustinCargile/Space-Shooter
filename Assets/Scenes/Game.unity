@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1648,14 +1648,25 @@ MonoBehaviour:
   _fireRate: 0.05
   _lives: 3
   _score: 0
-  _leftEngineVisual: {fileID: 1427716891}
-  _rightEngineVisual: {fileID: 1556685537}
+  _shieldLevel: 0
+  _Engines:
+  - {fileID: 1427716891}
+  - {fileID: 1556685537}
   ui: {fileID: 0}
   _speedBoost: 10
   _isTripleShotEnabled: 0
   _isSpeedBoostEnabled: 0
   _isShieldsActive: 0
   LaserContainer: {fileID: 1095731946}
+  _shieldlvl1:
+    serializedVersion: 2
+    rgba: 4294967295
+  _shieldlvl2:
+    serializedVersion: 2
+    rgba: 4278255382
+  _shieldlvl3:
+    serializedVersion: 2
+    rgba: 4290445567
 --- !u!212 &987245021
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1715,7 +1726,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987245019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.16, z: 0}
+  m_LocalPosition: {x: 0, y: -1.74, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1391366747}
@@ -2260,7 +2271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9106501578836038438, guid: 866e2b8edfbc9b5498f2f3d7ecf2781a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.04
       objectReference: {fileID: 0}
     - target: {fileID: 9106501578836038438, guid: 866e2b8edfbc9b5498f2f3d7ecf2781a, type: 3}
       propertyPath: m_LocalPosition.z

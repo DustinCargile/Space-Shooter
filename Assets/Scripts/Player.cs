@@ -20,7 +20,11 @@ public class Player : MonoBehaviour
     private int _lives = 3, _score = 0;
 
     [SerializeField]
-    GameObject _leftEngineVisual, _rightEngineVisual;
+    private int _shieldLevel = 0;
+
+    [SerializeField]
+    private GameObject[] _Engines;
+   
     [SerializeField]
     private UIManager ui;
 
@@ -37,7 +41,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Transform LaserContainer;
     private SpawnManager _spawnManager;
-    
+
+
+    #region ShieldColors
+    [SerializeField]
+    private Color32 _shieldlvl1, _shieldlvl2,_shieldlvl3;
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -108,53 +117,64 @@ public class Player : MonoBehaviour
         laser.transform.SetParent(LaserContainer);
     }
 
-    public void Damage(int dmg) 
+    public void Damage(int dmg)
     {
-        if (_isShieldsActive) 
+        if (_isShieldsActive)
         {
-            _isShieldsActive = false;
+            
             Animator _animator = _shieldVisualizer.gameObject.GetComponent<Animator>();
             if (_animator == null)
             {
                 Debug.Log("Could not find the Shield Animator!");
             }
-            else 
+            else
             {
-                _animator.SetTrigger("Destroy");
-               // _shieldVisualizer.transform.SetParent(null);
-                StartCoroutine(DisableShield());
+                
+                if (_shieldLevel == 1)
+                {
+                    _isShieldsActive = false;
+                    _animator.SetTrigger("Destroy");
+                    // _shieldVisualizer.transform.SetParent(null);
+                    shieldLevelDown();
+                    StartCoroutine(DisableShield());
+                }
+                else 
+                {
+                    _animator.SetTrigger("Destroy");
+                    _animator.SetTrigger("LevelDown");
+                    StartCoroutine(shieldLevelDownRoutine());
+                    //shieldLevelDown();
+                }
             }
             return;
         }
         _lives--;
-        int rnd = Random.Range(0, 2);
-        Debug.Log("RND is " + rnd);
-        if (rnd == 0)
-        {
-            if (!_leftEngineVisual.active)
-            {
-                _leftEngineVisual.SetActive(true);
-            }
-            else 
-            {
-                _rightEngineVisual.SetActive(true);
-            }   
-        }
-        if (rnd == 1)
-        {
-            if (!_rightEngineVisual.active)
-            {
-                _rightEngineVisual.SetActive(true);
-            }
-            else
-            {
-                _leftEngineVisual.SetActive(true);
-            }
-        }
+        
         ui.UpdateLives(_lives);
-        if (_lives <= 0) 
+        if (_lives <= 0)
         {
             Kill();
+        }
+        else 
+        {
+            RandomEngineDamage(Random.Range(0, _Engines.Length));
+        }
+        
+    }
+    IEnumerator shieldLevelDownRoutine() 
+    {
+        yield return new WaitForSeconds(0.3f);
+        shieldLevelDown();
+    }
+    void RandomEngineDamage(int val)
+    {
+        if (_Engines[val].active)
+        {
+            RandomEngineDamage(Random.Range(0, _Engines.Length));
+        }
+        else
+        {
+            _Engines[val].SetActive(true);
         }
     }
     IEnumerator DisableShield() 
@@ -198,8 +218,63 @@ public class Player : MonoBehaviour
     }
     public void setShieldActive() 
     {
-        _isShieldsActive = true;
-        _shieldVisualizer.SetActive(true);
+        if (!_isShieldsActive)
+        {
+            //this can be rewritten for efficency
+            _isShieldsActive = true;
+            _shieldVisualizer.SetActive(true);
+            shieldLevelUp();
+        }
+        else 
+        {
+            shieldLevelUp();
+            
+        }
+    }
+    public void shieldLevelUp() 
+    {
+        
+        if (_shieldLevel < 3) 
+        {
+            Animator animator = _shieldVisualizer.gameObject.GetComponent<Animator>();
+            _shieldLevel++;
+            if (_shieldLevel > 1) 
+            {
+                animator.SetTrigger("Activate");
+            }            
+            changeShieldColor();
+        }
+        
+    }
+    public void shieldLevelDown()
+    {
+
+        if (_shieldLevel > 0)
+        {
+            _shieldLevel--;
+            changeShieldColor();
+        }
+
+    }
+    public void changeShieldColor() 
+    {
+        Material shieldmat = _shieldVisualizer.gameObject.GetComponent<SpriteRenderer>().material;
+        switch (_shieldLevel)
+        {
+            case 0:
+                break;
+            case 1:
+                shieldmat.color = _shieldlvl1;
+                break;
+            case 2:
+                shieldmat.color = _shieldlvl2;
+                break;
+            case 3:
+                shieldmat.color = _shieldlvl3;
+                break;
+            default:
+                break;
+        }
     }
 
     IEnumerator TripleShotPowerDownRoutine(float timeInSeconds)
