@@ -137,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 20
   _explosionPrefab: {fileID: 2113317207472200297, guid: cc125a2bd17971244a7befb25e2e158e, type: 3}
+  _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
 --- !u!82 &4931117742242575893
 AudioSource:
   m_ObjectHideFlags: 0

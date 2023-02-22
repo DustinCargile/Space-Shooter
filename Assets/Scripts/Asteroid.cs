@@ -41,7 +41,14 @@ public class Asteroid : MonoBehaviour
             Destroy(other.gameObject);
             Instantiate(_explosionPrefab, this.transform);
             StartCoroutine(AsteroidExplodeRoutine());
-            _audioSource.PlayOneShot(_explosionSound);
+            if (_audioSource == null)
+            {
+                Debug.Log("Could not find Player Audio Source!");
+            }
+            else
+            {
+                _audioSource.PlayOneShot(_explosionSound);
+            }
         }
 
     }

@@ -57,7 +57,10 @@ public class Player : MonoBehaviour
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
         ui = FindObjectOfType<UIManager>();
+
         _audioSource = GetComponent<AudioSource>();
+
+
         //null checks????
         //take the current position = starting position(0,0,0)
         transform.position = new Vector3(0, -4f, 0);
@@ -74,7 +77,23 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+        if (Input.GetKeyDown(KeyCode.F)) 
+        {
+            setShieldActive();
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Damage(1);
+        }
+        if (Input.GetKeyDown(KeyCode.H)) 
+        {
+            Damage(4);
+        }
+
+
+
     }
+    
     private void Calculate_Movement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -123,7 +142,14 @@ public class Player : MonoBehaviour
         }
         laser.transform.SetParent(LaserContainer);
 
-        _audioSource.PlayOneShot(_laserSound);
+        if (_audioSource == null)
+        {
+            Debug.Log("Could not find Player Audio Source!");
+        }
+        else 
+        {
+            _audioSource.PlayOneShot(_laserSound);
+        }
         
     }
 
