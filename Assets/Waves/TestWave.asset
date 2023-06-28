@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ec2788d4f90e014a91dcdfe0bf1c037, type: 3}
+  m_Name: TestWave
+  m_EditorClassIdentifier: 
+  waveName: Test Wave
+  currentWave: 0
+  enemies:
+  - {fileID: 790826321453303671, guid: 0c26195b499edde42beb5f36d49d839c, type: 3}
+  enemyFrequency: 10
+  maxEnemies: 10
+  powerups:
+  - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
+  - {fileID: 7395955180422741772, guid: 885dd4cf6cc7a9f4db0b916193d531e6, type: 3}
+  powerupFrequency: 5
+  maxPowerups: 999

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    
 
     [SerializeField]
     private float _speed = 3f;
@@ -24,8 +25,23 @@ public class Asteroid : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _audioSource = GetComponent<AudioSource>();
-        //null checks???
         
+        if (_collider == null) 
+        {
+            Debug.Log("Could not find Asteroid Collider!");
+        }
+        if (_renderer == null) 
+        {
+            Debug.Log("Could not find Asteroid Renderer!");
+        }
+        if (_spawnManager == null) 
+        {
+            Debug.Log("Could not find SpawnManager");
+        }
+        if (_audioSource == null) 
+        {
+            Debug.Log("Could not find Asteroid Audio Source");
+        }
     }
 
     // Update is called once per frame
@@ -38,25 +54,30 @@ public class Asteroid : MonoBehaviour
     {
         if (other.tag == "Laser") 
         {
-            Destroy(other.gameObject);
-            Instantiate(_explosionPrefab, this.transform);
-            StartCoroutine(AsteroidExplodeRoutine());
-            if (_audioSource == null)
+            Laser laser = other.GetComponent<Laser>();
+            if (!laser.IsEnemyLaser) 
             {
-                Debug.Log("Could not find Player Audio Source!");
+                Destroy(other.gameObject);
+                Instantiate(_explosionPrefab, this.transform);
+                StartCoroutine(AsteroidExplodeRoutine());
+                if (_audioSource == null)
+                {
+                    Debug.Log("Could not find Player Audio Source!");
+                }
+                else
+                {
+                    _audioSource.PlayOneShot(_explosionSound);
+                }
             }
-            else
-            {
-                _audioSource.PlayOneShot(_explosionSound);
-            }
+            
         }
 
     }
 
     IEnumerator AsteroidExplodeRoutine() 
     {
-        yield return new WaitForSeconds(1f);
         _collider.enabled = false;
+        yield return new WaitForSeconds(1f);
         _renderer.enabled = false;
         yield return new WaitForSeconds(1.61f);
         _spawnManager.StartSpawning();

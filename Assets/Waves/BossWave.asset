@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ec2788d4f90e014a91dcdfe0bf1c037, type: 3}
+  m_Name: BossWave
+  m_EditorClassIdentifier: 
+  waveName: Boss Wave
+  currentWave: 0
+  enemies:
+  - {fileID: 7587443847489819434, guid: bc56df4460b43ec4aa738d36da8be9c5, type: 3}
+  enemyFrequency: 1
+  maxEnemies: 1
+  powerups:
+  - {fileID: 5536050502470600033, guid: 64450f3d2e77ac644baff9e4405d0720, type: 3}
+  - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
+  - {fileID: 3560312144817411370, guid: 37e08437ac00e29498f9b896ebeb4104, type: 3}
+  - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
+  - {fileID: 7395955180422741772, guid: 885dd4cf6cc7a9f4db0b916193d531e6, type: 3}
+  - {fileID: 6596633691297458768, guid: ced41dcdd91e55344994dbdafa2eb088, type: 3}
+  - {fileID: 3935492248638113234, guid: 4ede16afb91940d4882fb191fab2ed0c, type: 3}
+  - {fileID: 2109771534997508891, guid: 2d00977edb6371d4aaf7292d366ad243, type: 3}
+  powerupFrequency: 2
+  maxPowerups: 9999
