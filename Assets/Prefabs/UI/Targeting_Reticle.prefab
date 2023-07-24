@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2272738741990969375}
   - component: {fileID: 4650618356288147788}
   - component: {fileID: 337610788715193499}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Targeting_Reticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

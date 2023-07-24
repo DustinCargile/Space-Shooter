@@ -169,17 +169,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _health: 3
-  _spawnWeight: 0
+  _spawnWeight: 100
   _player: {fileID: 0}
   _spawnManager: {fileID: 0}
-  _explosionSound: {fileID: 0}
-  _hitSound: {fileID: 0}
+  _explosionSound: {fileID: 8300000, guid: 912532fc3df52494bb9b9610a9a4f003, type: 3}
+  _hitSound: {fileID: 8300000, guid: 3d6413362885443168c6b453d5473cf0, type: 3}
   _targetPos: {x: 0, y: 0, z: 0}
   _targets:
   - {x: 0, y: 0, z: 0}
-  - {x: 7, y: 0, z: 0}
-  - {x: -7, y: 0, z: 0}
-  _sensor: {fileID: 0}
+  - {x: 7, y: 7, z: 0}
+  - {x: -7, y: -7, z: 0}
+  - {x: -7, y: 7, z: 0}
+  - {x: 7, y: -7, z: 0}
+  _speedMultiplier: 1
 --- !u!114 &3860693450636810422
 MonoBehaviour:
   m_ObjectHideFlags: 0

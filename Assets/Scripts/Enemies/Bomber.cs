@@ -34,7 +34,8 @@ public class Bomber : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     private GameObject _projectile1Prefab,projectile2Prefab;
 
     private float _fireRate = 3.0f;
-    private float _canFire = -1;
+    private float _canFire1 = -1;
+    private float _canFire2 = -1;
 
     [SerializeField]
     private Vector3 _targetPos;
@@ -89,11 +90,21 @@ public class Bomber : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         {
             LookAt(_targetPos);
         }
-        
-        if (Time.time > _canFire)
+
+        if (Time.time > _canFire1)
+        {
+            _fireRate = Random.Range(2f, 5f);
+            _canFire1 = Time.time + _fireRate;
+            if (!_isDead)
+            {
+
+                Attack1();
+            }
+        }
+        if (Time.time > _canFire2)
         {
             _fireRate = Random.Range(3f, 7f);
-            _canFire = Time.time + _fireRate;
+            _canFire2 = Time.time + _fireRate;
             if (!_isDead)
             {
                 
@@ -151,13 +162,22 @@ public class Bomber : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     }
     private void Attack1() 
     {
+        GameObject bombTubeParticles;
+        GameObject bombFlash;
         int bombTubeSelector = Random.Range(0, _bombTubes.Length);
         GameObject enemyBomb = Instantiate(_projectile1Prefab, 
             _bombTubes[bombTubeSelector].transform.position, 
             transform.localRotation);
+        bombTubeParticles = _bombTubes[bombTubeSelector].transform.GetChild(0).gameObject;
+
+        bombTubeParticles.SetActive(false);
+        bombTubeParticles.SetActive(true);
+    
         Laser bomb = enemyBomb.GetComponent<Laser>();
         bomb.MakeEnemyLaser();
+
     }
+    
     private void Attack2() 
     {
         for (int i = 0; i < 8; i++) 

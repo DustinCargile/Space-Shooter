@@ -48,7 +48,8 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     [SerializeField]
     private float _speed = 5f;
 
-    
+
+    private float _dirChangeAcc = -1;
 
     private Vector3 _initPos = new Vector3(1.22f,16,0);
     private Vector3 _startPos = new Vector3(1.22f, 2.03f, 0);
@@ -140,6 +141,8 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     }
     private void CalculateMovement() 
     {
+        float dirChangeTime = .5f;
+        
         if (_currentState == State.ElectricAttack) 
         {
             SineWavePattern();
@@ -155,8 +158,10 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
             }
         }
         transform.Translate(Vector3.left * _speed * Time.deltaTime);
-        if (transform.position.x < _leftBounds || transform.position.x > _rightBounds) 
+        if ((transform.position.x < _leftBounds || transform.position.x > _rightBounds) && Time.time > _dirChangeAcc) 
         {
+
+            _dirChangeAcc = Time.time + dirChangeTime;
             _speed *= -1f;
         }
         if (_isPursuingPlayer && _player != null) 
@@ -456,7 +461,7 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
             transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, originalPosition.y, Time.deltaTime * (transitionTime - 30)));
             yield return new WaitForSeconds(yieldTime);
         }
-        transform.position =   originalPosition;
+        transform.position = new Vector3(transform.position.x,originalPosition.y,originalPosition.z);
         
     }
     private void TransitionToChargeState() 

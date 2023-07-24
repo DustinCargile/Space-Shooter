@@ -251,20 +251,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86425fd6d873d7b4eb9263fe8d0414ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 50
+  _speed: 10
   _health: 1
   _spawnWeight: 50
   _damage: 1
-  _upperbound: 6.5
-  _lowerbound: -6.5
+  _upperbound: 7.6
+  _lowerbound: -7.6
   _timeDelay: 0.3
   _player: {fileID: 0}
   _isHunter: 0
   _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
-  tXpos: -10
-  tYpos: -4
-  frequency: 1
-  amplitude: 5
+  frequency: 100
+  amplitude: 7.6
   minWaitTime: 0.5
   maxWaitTime: 1
   target: {x: 0, y: 0, z: 0}

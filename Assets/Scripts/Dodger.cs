@@ -22,15 +22,15 @@ public class Dodger : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     public float SpawnWeight { get { return _spawnWeight; } }
 
     [SerializeField]
-    private float _upperbound = 6.5f,
-                  _lowerbound = -6.5f;
+    private float _upperbound = 9.88f,
+                  _lowerbound = -9.88f;
 
     [SerializeField]
     private float _timeDelay = 0.3f;
     private float _xPos;
 
-    private float _leftbound = -9.5f,
-                  _rightbound = 9.5f;
+    private float _leftbound = -14.3f,
+                  _rightbound = 14.3f;
 
     private int _dir = 0;
     [SerializeField]
@@ -148,33 +148,8 @@ public class Dodger : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
                     Debug.Log("No hit collider found!");
                 }
             }
-        }
-
-        
-        /*Vector3 playerFireDirection = GetPlayerFireDirection();
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position + (Vector3.down * _detectRadius), _detectRadius, Vector3.down,_detectRadius);
-        
-
-        if (hit.collider != null)
-        {
-
-            GameObject hitObject = hit.collider.gameObject;
-
-            if (hitObject.tag == "Laser")
-            {
-                Laser laser = hitObject.GetComponent<Laser>();
-                if (!laser.IsEnemyLaser)
-                {
-                    Debug.DrawRay(transform.position, hit.point - (Vector2)transform.position, Color.red);
-                    HandleCollision(hitObject);
-                }
-            }
-
-        }
-        else 
-        {
-            Debug.Log("No hit collider found!");
-        }*/
+        }       
+ 
     }
     
     private void HandleCollision(GameObject projectile) 
@@ -193,16 +168,6 @@ public class Dodger : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
                 _rLeftRight = 0;
             }
         }
-        /*var rPoint = transform.InverseTransformPoint(projectile.gameObject.transform.position);
-        if (rPoint.x >= -5f && rPoint.x <= 5f && !_projectileInFront)
-        {
-            
-            _projectileInFront = true;
-            StartCoroutine(Dodge());
-        }*/
-
-
-
     }
     IEnumerator Dodge() 
     {
@@ -284,7 +249,7 @@ public class Dodger : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     {
 
 
-        _xPos = Random.Range(-9.5f, 9.5f);
+        _xPos = Random.Range(_leftbound, _rightbound);
         transform.position = new Vector3(_xPos, _upperbound, 0);
         
 

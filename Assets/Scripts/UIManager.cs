@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _rocketAmmoText;
 
     [SerializeField]
-    private TextMeshProUGUI _noAmmoText;
+    private TextMeshProUGUI _noAmmoText,_ammoText;
 
     [SerializeField]
     private GameObject _ammoUnit, _ammoGridUsed;
@@ -56,7 +56,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Timer _clock;
     #endregion
-
+    #region Shield Levels
+    [SerializeField]
+    private Material _shieldLvl1Mat, _shieldLvl2Mat,_shieldLvl3Mat;
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +69,7 @@ public class UIManager : MonoBehaviour
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
         UpdateBoostCooldown(0);
-
+        
         
 
     }
@@ -123,6 +126,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateAmmo(int currentAmmo) 
     {
+        _ammoText.text = currentAmmo.ToString();
         if (currentAmmo > _ammoDisplay.transform.childCount) 
         {
             for (int i = 0; _ammoDisplay.transform.childCount < currentAmmo; i++) 
@@ -245,7 +249,33 @@ public class UIManager : MonoBehaviour
             yield return null;
         }      
     }
-
+    public void UpdateShieldLevel(int level) 
+    {
+        switch (level) 
+        {
+            case 0:
+                _shieldLvl1Mat.DisableKeyword("GLOW_ON");
+                _shieldLvl2Mat.DisableKeyword("GLOW_ON");
+                _shieldLvl3Mat.DisableKeyword("GLOW_ON");
+                break;
+            case 1:
+                _shieldLvl1Mat.EnableKeyword("GLOW_ON");
+                _shieldLvl2Mat.DisableKeyword("GLOW_ON");
+                _shieldLvl3Mat.DisableKeyword("GLOW_ON");
+                break;
+            case 2:
+                _shieldLvl1Mat.DisableKeyword("GLOW_ON");
+                _shieldLvl2Mat.EnableKeyword("GLOW_ON");
+                _shieldLvl3Mat.DisableKeyword("GLOW_ON");
+                break;
+            case 3:
+                _shieldLvl1Mat.DisableKeyword("GLOW_ON");
+                _shieldLvl2Mat.DisableKeyword("GLOW_ON");
+                _shieldLvl3Mat.EnableKeyword("GLOW_ON");
+                break;
+        }
+    
+    }
     IEnumerator GameOverFlickerRoutine() 
     {
         _clock.StopTimer();

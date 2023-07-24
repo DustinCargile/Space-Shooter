@@ -25,8 +25,8 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     private SpawnManager _spawnManager;
 
     private BoxCollider2D _boxCollider;
-    private CapsuleCollider2D _capsuleCollider;
 
+    private float _waitTime = .5f;
     private Animator _animator;
     private bool _isDead = false;
 
@@ -47,11 +47,15 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     private int _currentTargetindex = 0;
 
     [SerializeField]
-    private Sensor _sensor;
+   
     private float _speedMultiplier = 1f;
     private bool _canDoDamage = true;
 
     private Transform _parentTransform;
+
+    private float arcAngle = 45f;
+    private float raycastDist = 5f;
+    private int rayCount = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +66,7 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         _audioSource = GetComponent<AudioSource>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _material = GetComponent<SpriteRenderer>().material;
-        _capsuleCollider = GetComponent<CapsuleCollider2D>();
+        
         
 
         //null checks???
@@ -73,19 +77,17 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
 
 
         _targetPos = _targets[_currentTargetindex];
-        transform.position = new Vector3(Random.Range(-15f, 15f), 8f, 0);
+        transform.position = new Vector3(Random.Range(-15f, 15f), 9.88f, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        CheckForIncomingProjectiles();
         if (!_isDead) 
         {
             transform.position = Vector3.MoveTowards(transform.position, _targetPos, _speedMultiplier * _speed * Time.deltaTime);
 
-            _sensor.transform.position = transform.position;
-            _sensor.transform.rotation = transform.rotation;
         }
         
 
@@ -101,23 +103,51 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         {
             LookAt(_targetPos);
         }
-        if (_sensor.AggroLevel == 0 && _canDoDamage && !_reachedTarget)
-            _speedMultiplier = 1;
-        if (_sensor.AggroLevel > 0 && !_reachedTarget) 
-        {
-            if (_player != null) 
-            {
-                _targetPos = _player.transform.position;
-            }
-        }
-        if (_sensor.AggroLevel > 2 && _canDoDamage && !_reachedTarget) 
-        {
-            _speedMultiplier = 3;
-            _animator.SetTrigger("Charge");
-        }
-        
+    
 
        
+    }
+    private void CheckForIncomingProjectiles()
+    {
+        float angleIncrement = arcAngle / (rayCount - 1);
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            float angle = -arcAngle / 2 + i * angleIncrement;
+            float radians = Mathf.Deg2Rad * (angle + transform.rotation.z);            
+            Vector2 direction = transform.TransformDirection(new Vector2(Mathf.Sin(radians), -Mathf.Cos(radians)));
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, raycastDist);
+            Debug.DrawRay(transform.position, direction * raycastDist, Color.red, .1f);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null)
+                {
+
+                    GameObject hitObject = hit.collider.gameObject;
+
+                    if (hitObject.tag == "Player")
+                    {
+                        Player player = hitObject.GetComponent<Player>();
+                        _targetPos = player.transform.position;
+                        if (_canDoDamage) 
+                        {
+                            _speedMultiplier = 3f;
+                            _animator.SetTrigger("Charge");
+                        }
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("No hit collider found!");
+                }
+            }
+        }
+
+    }
+    private void HandleCollision(GameObject projectile)
+    {
+  
     }
     IEnumerator AttackCooldown() 
     {
@@ -125,7 +155,7 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         _canDoDamage = false;
         _speedMultiplier = 0f;
         StartCoroutine(ReachedTarget());
-        yield return new WaitForSeconds(5f);        
+        yield return new WaitForSeconds(_waitTime);        
         _canDoDamage = true;
         _speedMultiplier = 1;
     }
@@ -146,13 +176,17 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             }
 
         }
-        if (other.tag == "Player" && _sensor.AggroLevel >4 && _canDoDamage)
+        if (other.tag == "Player")
         {
-            StartCoroutine(AttackCooldown());
-            Player player = other.GetComponent<Player>();
-            player.Damage(1);
+            if (_canDoDamage)
+            {
 
+                Player player = other.GetComponent<Player>();
+                player.Damage(1);
+            }
+            StartCoroutine(AttackCooldown());
         }
+        
     }
 
     public void LookAt(Vector3 target)
@@ -214,16 +248,9 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             {
                 _boxCollider.enabled = false;
             }
-            if (_capsuleCollider == null)
-            {
-                Debug.Log("Capsule Collider could not be loaded!");
-            }
-            else
-            {
-                _capsuleCollider.enabled = false;
-            }
+           
 
-            _sensor.gameObject.SetActive(false);
+          
             _isDead = true;
             _speed = 1;
             _audioSource.PlayOneShot(_explosionSound);
@@ -233,6 +260,9 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     }
     IEnumerator ReachedTarget()
     {
+        _animator.ResetTrigger("Charge");
+        _animator.SetTrigger("Normal");
+        
         _reachedTarget = true;
         _currentTargetindex++;
         if (_currentTargetindex >= _targets.Length)
@@ -243,7 +273,8 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         {
             
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(_waitTime);
+        _speedMultiplier = 1;
         _targetPos = _targets[_currentTargetindex];
         _reachedTarget = false;
     }

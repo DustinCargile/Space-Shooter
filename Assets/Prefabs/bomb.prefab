@@ -104,6 +104,7 @@ MonoBehaviour:
   _laserContainer: {fileID: 0}
   _isEnemyLaser: 1
   _isDestroyedOnContact: 1
+  _prefabExplosion: {fileID: 0}
 --- !u!70 &4128285010203851965
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -154,10 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeInSeconds: 5
-  _capCollider: {fileID: 0}
-  _explosionRadius: 5
   _prefabExplosion: {fileID: 2436199190869115657, guid: 866de8a197eccbf4288e8d8a89a45534, type: 3}
-  _tickSound: {fileID: 8300000, guid: c2f24dd48a342014d850a4275896a0b9, type: 3}
+  _tickSound: {fileID: 8300000, guid: b81e33cfd07ed03408ce4fb4212ae2bc, type: 3}
 --- !u!82 &2200912259855073944
 AudioSource:
   m_ObjectHideFlags: 0
@@ -167,10 +166,10 @@ AudioSource:
   m_GameObject: {fileID: 3312947699205286833}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dc3b1a92cb0f5c44bac4f8f9d8872ee7, type: 3}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: c07fa55b5c89d294e85da9d6489546a1, type: 2}
+  m_audioClip: {fileID: 8300000, guid: c26d56f148a5591459359482c7a94e17, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.634
+  m_Volume: 0.67
   m_Pitch: 1
   Loop: 0
   Mute: 0

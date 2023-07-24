@@ -109,11 +109,13 @@ public class Player : MonoBehaviour
         ui.UpdateBoostCooldown(_currentBoostPercent);
         ui.UpdateAmmo(_ammo);
         ui.UpdateRocketAmmo(_rocketAmmo);
+        ui.UpdateShieldLevel(_shieldLevel);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         Calculate_Movement();
 
         
@@ -288,6 +290,7 @@ public class Player : MonoBehaviour
     }
     public void Damage(int dmg)
     {
+        
         if (_isShieldsActive)
         {
             
@@ -297,11 +300,13 @@ public class Player : MonoBehaviour
                 Debug.Log("Could not find the Shield Animator!");
             }
             else
-            {                
+            {
+                
                 if (_shieldLevel <= 1)
                 {
                     _isShieldsActive = false;
                     StartCoroutine(DisableShield());
+                    
                 }
                 else 
                 {
@@ -337,7 +342,8 @@ public class Player : MonoBehaviour
         {
             RandomEngineDamage(Random.Range(0, _Engines.Length));
         }
-        
+       
+
     }
     public void Heal(int hp) 
     {        
@@ -511,7 +517,7 @@ public class Player : MonoBehaviour
 
     public void SetShieldActive()
     {
-
+        ui.UpdateShieldLevel(_shieldLevel);
         if (!_isShieldsActive)
         {
             _isShieldsActive = true;
@@ -522,6 +528,8 @@ public class Player : MonoBehaviour
 
     public void SetShieldInactive()
     {
+        ui.UpdateShieldLevel(_shieldLevel);
+
         if (_isShieldsActive)
         {
             Animator _shieldAnimator = _shieldVisualizer.gameObject.GetComponent<Animator>();//This is called too many times to NOT be global
@@ -539,9 +547,10 @@ public class Player : MonoBehaviour
     }
     public void ShieldLevelUp()
     {
-
+        ui.UpdateShieldLevel(_shieldLevel);
         if (_shieldLevel < 3)
         {
+            
             Animator animator = _shieldVisualizer.gameObject.GetComponent<Animator>();
             _shieldLevel++;
             if (_shieldLevel >= 1)
@@ -551,24 +560,32 @@ public class Player : MonoBehaviour
             ChangeShieldColor();
 
         }
-
+        
     }
     public void ShieldLevelDown()
     {
+        ui.UpdateShieldLevel(_shieldLevel);
         if (_shieldLevel > 0)
         {
             _shieldLevel--;
 
             ChangeShieldColor();
         }
+        else 
+        {
+            StartCoroutine(DisableShield());
+        }
+        
     }
 
     public void ChangeShieldColor()
     {
+        
         Material shieldmat = _shieldVisualizer.gameObject.GetComponent<SpriteRenderer>().material;
         switch (_shieldLevel)
         {
             case 0:
+                SetShieldInactive();
                 break;
             case 1:
                 shieldmat.color = _shieldlvl1;
@@ -582,6 +599,7 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
+        ui.UpdateShieldLevel(_shieldLevel);
     }
     IEnumerator ShieldLevelDownRoutine()
     {
@@ -595,6 +613,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(.25f);
         _isShieldsActive = false; ;
         _shieldVisualizer.SetActive(false);
+        ui.UpdateShieldLevel(_shieldLevel);
     }
     #endregion
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
 {
+   
     [SerializeField]
     private float _speed = 5f;
     [SerializeField]
@@ -26,15 +27,15 @@ public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     public float SpawnWeight { get { return _spawnWeight; } }
 
     [SerializeField]
-    private float _upperbound = 7.6f,
-                  _lowerbound = -7.6f;
+    private float _upperbound = 9.88f,
+                  _lowerbound = -9.88f;
 
     [SerializeField]
     private float _timeDelay = 0.3f;
     private float _xPos;
 
-    private float _leftbound = -13.9f,
-                  _rightbound = 13.9f;
+    private float _leftbound = -16f,
+                  _rightbound = 16f;
 
     private int _dir = 0;
     [SerializeField]
@@ -78,6 +79,7 @@ public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     // Start is called before the first frame update
     void Start()
     {
+        
          _player = FindObjectOfType<Player>();
         _animator = GetComponent<Animator>();
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -104,6 +106,7 @@ public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     // Update is called once per frame
     void Update()
     {
+        
         if (_powerupContainer != null)
         {
             _powerups = _powerupContainer.GetComponentsInChildren<Powerup>();
@@ -178,10 +181,12 @@ public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         }
         else 
         {
-            prefabToLoad= _backLaserPrefab;
-            GameObject enemyLaser = Instantiate(prefabToLoad, transform.position, transform.localRotation);
+            prefabToLoad = _backLaserPrefab;
+            GameObject enemyLaser = Instantiate(prefabToLoad, transform.position, transform.rotation);
+            enemyLaser.transform.Rotate(transform.rotation.x, transform.rotation.y, transform.rotation.z + 180);
             Laser laser = enemyLaser.GetComponent<Laser>();
             laser.MakeEnemyLaser();
+
             
         }
                   
@@ -211,7 +216,7 @@ public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             
             StartCoroutine(RotateToZero(.02f));
         }
-        if (_isSideways && (transform.localPosition.x < -12f || transform.localPosition.x > 12f)) 
+        if (_isSideways && (transform.localPosition.x < _leftbound || transform.localPosition.x > _rightbound)) 
         {
             
             GetNewPos();
@@ -245,18 +250,18 @@ public class Enemy : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     {
       
         
-        _xPos = Random.Range(-9.5f, 9.5f);
+        _xPos = Random.Range(_leftbound, _rightbound);
         transform.position = new Vector3(_xPos, _upperbound, 0);
         if (_isSideways)
         {
             float yPos = Random.Range(-6f, 6f);
             if (_dir == 0)
             {
-                transform.position = new Vector3(-10f, yPos, 0);
+                transform.position = new Vector3(_leftbound, yPos, 0);
             }
             else 
             {
-                transform.position = new Vector3(10f, yPos, 0);
+                transform.position = new Vector3(_rightbound, yPos, 0);
             }
             
         }

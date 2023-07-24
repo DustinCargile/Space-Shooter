@@ -10,6 +10,7 @@ public class SeekingRocket : MonoBehaviour
 
     [SerializeField]
     private GameObject _target,_targetReticle;
+    private GameObject _activeReticle;
 
     [SerializeField]
     private float _rotSpeed = 10f;
@@ -26,21 +27,34 @@ public class SeekingRocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_target != null) 
+        if (_target != null)
         {
             LookAt(_target.transform.position);
-            if (Numbers.RangeOfFloats(Vector2.Distance(transform.position,_target.transform.position),-.1f,.1f)) 
+            if (Numbers.RangeOfFloats(Vector2.Distance(transform.position, _target.transform.position), -.1f, .1f))
             {
                 BlowUp();
             }
+            
         }
-        
+        if (_activeReticle != null)
+        {
+            if (!_activeReticle.GetComponentInParent<SpriteRenderer>().enabled)
+            {
+                Destroy(_activeReticle.gameObject);
+            }
+        }
+
+
     }
 
     private void BlowUp() 
     {
         if (!_isBlowingUp) 
         {
+            if (_activeReticle != null) 
+            {
+                Destroy(_activeReticle.gameObject);
+            }
             _isBlowingUp = true;
             Laser l = GetComponent<Laser>();
             l.BlowUp();
@@ -75,8 +89,9 @@ public class SeekingRocket : MonoBehaviour
                 target = enemies[closestIndex].gameObject;
                 if (!enemies[closestIndex].IsTargeted) 
                 {
-                    enemies[closestIndex].IsTargeted = true;
-                    Instantiate(_targetReticle, target.transform);
+                    //enemies[closestIndex].IsTargeted = true;
+                    _activeReticle = Instantiate(_targetReticle, target.transform);
+                    _activeReticle.transform.localPosition =  Vector3.zero;
                 }
                 
                 

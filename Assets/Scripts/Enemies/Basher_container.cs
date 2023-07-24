@@ -17,7 +17,7 @@ public class Basher_container : MonoBehaviour,ISpawnableEnemy
     // Update is called once per frame
     void Update()
     {
-        if (transform.childCount < 2) 
+        if (transform.childCount < 1) 
         {
             Destroy(gameObject,2f);
         }

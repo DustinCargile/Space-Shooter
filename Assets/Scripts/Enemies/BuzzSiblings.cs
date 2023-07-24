@@ -25,11 +25,9 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
 
     [SerializeField]
     private float _timeDelay = 0.3f;
-    private float _xPos,_yPos
-        ;
 
-    private float _leftbound = -13.9f,
-                  _rightbound = 13.9f;
+    private float _leftbound = -16f,
+                  _rightbound = 16f;
     [SerializeField]
     private Player _player;
 
@@ -44,8 +42,9 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     private AudioClip _explosionSound;
     private AudioSource _audioSource;
     private int _dir = 0;
+    private int _upDir = 1;
     [SerializeField]
-    private float tXpos = -10f, tYpos = -5f, frequency, amplitude, minWaitTime, maxWaitTime;
+    private float frequency, amplitude, minWaitTime, maxWaitTime;
     [SerializeField]
     private Vector3 target;
     private SpawnManager _spawnManager;
@@ -68,21 +67,16 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             RandomizeDirection();
             if (_dir == 0) //From Left
             {
-                transform.position = new Vector3(-12f, 0f, 0f);
-                tXpos = -10;
+                transform.position = new Vector3(_leftbound, 0f, 0f);
+                
             }
             else //From Right
             {
-                transform.position = new Vector3(12f, 0f, 0f);
-                tXpos = 10;
+                transform.position = new Vector3(_rightbound, 0f, 0f);
+               
             }
             
         }
-            
-        
-        tYpos = -amplitude;
-        target = new Vector3(tXpos, tYpos, 0);
-
 
     }
 
@@ -92,13 +86,13 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
 
         if (_isHunter && _player != null)
         {
-            
             target = _player.transform.position;
+            transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
         }
-        
+        else 
+        {
             Move();
-        
-
+        }
 
     }
     private void RandomizeDirection() 
@@ -107,52 +101,49 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     }
     private void Move() 
     {
-        
-        transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
-        if (transform.position == target && !_isWaiting)
+        transform.Translate(Vector3.right * _speed * Time.deltaTime);
+        transform.Translate(Vector3.up * frequency * _upDir* Time.deltaTime);
+        if (transform.position.y > amplitude && _upDir == 1)
+        {
+            _upDir = -1;
+            CheckIsWaiting();
+        }
+        else if (transform.position.y < -amplitude && _upDir == -1)
+        {
+            _upDir = 1;
+            CheckIsWaiting();
+        }
+        if (transform.position.x < _leftbound) 
+        {
+            _dir = 0;
+            _speed *= -1;
+        }
+        else if(transform.position.x > _rightbound)
+        {
+            _dir = 1;
+            _speed *= -1;
+        }
+
+    }
+    private void CheckIsWaiting() 
+    {
+        if (!_isWaiting)
         {
             _isWaiting = true;
-           StartCoroutine(StayPutRoutine(minWaitTime,maxWaitTime));
-        }
-        if (_dir == 0)
-        {
-            if (transform.position.x > 12)
-            {
-                transform.position = new Vector3(-12f, 0f, 0f);
-                tXpos = -10f;
-                tYpos = -5f;
-                target = new Vector3(tXpos, tYpos, 0);
-            }
-        }
-        else 
-        {
-            if (transform.position.x < -12)
-            {
-                transform.position = new Vector3(12f, 0f, 0f);
-                tXpos = 10f;
-                tYpos = -5f;
-                target = new Vector3(tXpos, tYpos, 0);
-            }
+            StartCoroutine(StayPutRoutine(minWaitTime, maxWaitTime));
         }
     }
 
     IEnumerator StayPutRoutine(float minTime,float maxTime) 
     {
+        float tmpSpeed = _speed;
+        float tmpFreq = frequency;
+        _speed = 0;
+        frequency = 0;
         yield return new WaitForSeconds(Random.Range(minTime,maxTime));
-        if (_dir == 0)
-        {
-            tXpos += frequency;
-            tYpos *= -1;
-        }
-        else 
-        {
-            tXpos -= frequency;
-            tYpos *= -1;
-        }
-        target = new Vector3(tXpos, tYpos, 0);
+        frequency = tmpFreq;
+        _speed = tmpSpeed;
         _isWaiting = false;
-        
-
     }
     
 
@@ -165,8 +156,6 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             {
                 Debug.Break();
             }
-
-            
             if (!laser.IsEnemyLaser) 
             {
                 Damage(laser.Damage);
@@ -175,15 +164,12 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
                     Destroy(other.gameObject);
                 }
             }
-
         }
         if (other.tag == "Player")
         {
-
             Player player = other.GetComponent<Player>();
             player.Damage(_damage);
             Damage(1);
-            
         }
     }
     public void Damage(int value) 
@@ -224,7 +210,8 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             _player.AdjustScore(10);
 
             _isDead = true;
-            _speed = 1;
+            _speed = 0;
+            frequency = 0;
             _audioSource.PlayOneShot(_explosionSound);
             Destroy(gameObject, 1.0f);
         }

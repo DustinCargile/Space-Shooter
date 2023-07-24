@@ -17,7 +17,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 790826321453303671, guid: 0c26195b499edde42beb5f36d49d839c, type: 3}
   enemyFrequency: 10
-  maxEnemies: 10
+  maxEnemies: 100
   powerups:
   - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
   - {fileID: 7395955180422741772, guid: 885dd4cf6cc7a9f4db0b916193d531e6, type: 3}

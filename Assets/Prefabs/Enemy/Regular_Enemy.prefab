@@ -121,9 +121,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _health: 1
-  _spawnWeight: 75
-  _upperbound: 7.6
-  _lowerbound: -7.6
+  _spawnWeight: 100
+  _upperbound: 9.88
+  _lowerbound: -9.88
   _timeDelay: 0.3
   _player: {fileID: 0}
   _spawnManager: {fileID: 0}
