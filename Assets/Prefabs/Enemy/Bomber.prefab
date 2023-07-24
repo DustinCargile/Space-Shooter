@@ -19357,7 +19357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 1
   _health: 10
-  _spawnWeight: 50
+  _spawnWeight: 25
   _player: {fileID: 0}
   _spawnManager: {fileID: 0}
   _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}

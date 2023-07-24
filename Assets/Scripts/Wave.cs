@@ -20,6 +20,8 @@ public class Wave : ScriptableObject
     public float enemyFrequency;
     [Tooltip("The maximum enemies that will spawn during the wave.")]
     public int maxEnemies;
+    [Tooltip("The amount of enemies that will spawn at a time.")]
+    public int enemySpawnAmount;
 
     [Space(10)]
     [Header("Powerup Settings")]
@@ -29,5 +31,7 @@ public class Wave : ScriptableObject
     public float powerupFrequency;
     [Tooltip("The maximum power-ups that will spawn during the wave.")]
     public int maxPowerups;
+    [Tooltip("The amount power-ups that will spawn at a time.")]
+    public int powerupSpawnAmount;
 
 }

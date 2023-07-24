@@ -17,8 +17,9 @@ public class SpawnManager : MonoBehaviour
     private Powerup_Container _powerupContainer;
     //private float _spawnNumber = 0.0f;
     [SerializeField]
-    private int _spawnEnemyCount = 1, _spawnPowerupCount = 1;
+    private int _enemySpawnAmount = 1, _powerupSpawnAmount = 1;
     private bool _stopSpawning = false;
+    [SerializeField]
     private int _spawnedEnemyCount = 0;
     private int _spawnedPowerupCount = 0;
     private int _enemiesDowned = 0;
@@ -55,7 +56,7 @@ public class SpawnManager : MonoBehaviour
         }
         while (!_stopSpawning && _spawnedEnemyCount < _levelWaves[_currentWave].maxEnemies) 
         {
-            for (int i = 0; i < _spawnEnemyCount; i++) 
+            for (int i = 0; i < _enemySpawnAmount; i++) 
             {
                 SpawnRandomEnemy();
             }
@@ -74,19 +75,22 @@ public class SpawnManager : MonoBehaviour
         Vector3 posToSpawn = new Vector3(0, 0, 0);
         ISpawnableEnemy randEnemy = _enemyPrefab[r].gameObject.GetComponent<ISpawnableEnemy>();
         //Enemy randEnemy = _enemyPrefab[r].gameObject.GetComponent<Enemy>(); 
-        if (randEnemy == null)
+        if (_levelWaves[_currentWave].maxEnemies > _spawnedEnemyCount) 
         {
-            Debug.Log("Failed to Load Enemy!");
-        }
-        if (randEnemy.SpawnWeight >= spawnNumber)
-        {
-            GameObject spawnedEnemy = Instantiate(_enemyPrefab[r], posToSpawn, Quaternion.identity);
-            spawnedEnemy.transform.SetParent(_enemyContainer.transform);
-            _spawnedEnemyCount++;
-        }
-        else 
-        {
-            SpawnRandomEnemy();
+            if (randEnemy == null)
+            {
+                Debug.Log("Failed to Load Enemy!");
+            }
+            if (randEnemy.SpawnWeight >= spawnNumber)
+            {
+                GameObject spawnedEnemy = Instantiate(_enemyPrefab[r], posToSpawn, Quaternion.identity);
+                spawnedEnemy.transform.SetParent(_enemyContainer.transform);
+                _spawnedEnemyCount++;
+            }
+            else
+            {
+                SpawnRandomEnemy();
+            }
         }
         
     }
@@ -96,7 +100,7 @@ public class SpawnManager : MonoBehaviour
         {
             float multiplier = _levelWaves[_currentWave].powerupFrequency;
             yield return new WaitForSeconds(Random.Range(_powerupSpawnMin/multiplier,_powerupSpawnMax/multiplier));
-            for (int i = 0; i < _spawnPowerupCount; i++) 
+            for (int i = 0; i < _powerupSpawnAmount; i++) 
             {
                 if (!_stopSpawning) 
                 {
@@ -117,22 +121,25 @@ public class SpawnManager : MonoBehaviour
         float spawnNumber = Random.Range(0f, 101f);
         r = Random.Range(0, _powerupPrefab.Length);
         Powerup randPowerup = _powerupPrefab[r].gameObject.GetComponent<Powerup>();
-        if (randPowerup == null) 
+        if (_levelWaves[_currentWave].maxPowerups > _spawnedPowerupCount) 
         {
-            Debug.Log("Failed to get Powerup!");
-        }
-        if (randPowerup.SpawnWeight >= spawnNumber)
-        {
-            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            GameObject powerup = Instantiate(_powerupPrefab[r], posToSpawn, Quaternion.identity);
-            powerup.transform.SetParent(_powerupContainer.gameObject.transform, true);
-            _spawnedPowerupCount++;
-        }
-        else 
-        {          
-            if (!_stopSpawning)
+            if (randPowerup == null)
             {
-                SpawnRandomPowerup();
+                Debug.Log("Failed to get Powerup!");
+            }
+            if (randPowerup.SpawnWeight >= spawnNumber)
+            {
+                Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                GameObject powerup = Instantiate(_powerupPrefab[r], posToSpawn, Quaternion.identity);
+                powerup.transform.SetParent(_powerupContainer.gameObject.transform, true);
+                _spawnedPowerupCount++;
+            }
+            else
+            {
+                if (!_stopSpawning)
+                {
+                    SpawnRandomPowerup();
+                }
             }
         }
 
@@ -141,7 +148,7 @@ public class SpawnManager : MonoBehaviour
     {
         _enemiesDowned++;
         _totalEnemiesDowned++;
-        if (_enemiesDowned == _levelWaves[_currentWave].maxEnemies)
+        if (_enemiesDowned >= _levelWaves[_currentWave].maxEnemies && _enemySpawnAmount != 0)
         {
             _currentWave++;
             _enemiesDowned = 0;
@@ -193,6 +200,8 @@ public class SpawnManager : MonoBehaviour
         while (_currentWave < _levelWaves.Length && _waveComplete) 
         {
             _enemiesDowned = 0;
+            _enemySpawnAmount = _levelWaves[_currentWave].enemySpawnAmount;
+            _powerupSpawnAmount = _levelWaves[_currentWave].powerupSpawnAmount;
             _waveText.text = _levelWaves[_currentWave].waveName;
             _waveText.gameObject.SetActive(true);
             yield return new WaitForSeconds(5f);
@@ -206,6 +215,7 @@ public class SpawnManager : MonoBehaviour
     }
     public void StartSpawning() 
     {
+        
         StartCoroutine(WaveSpawnRoutine());
         
     }

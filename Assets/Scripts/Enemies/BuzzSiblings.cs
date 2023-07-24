@@ -48,6 +48,8 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     [SerializeField]
     private Vector3 target;
     private SpawnManager _spawnManager;
+
+    private float _dirChangeAcc = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,12 +69,12 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             RandomizeDirection();
             if (_dir == 0) //From Left
             {
-                transform.position = new Vector3(_leftbound, 0f, 0f);
+                transform.position = new Vector3(_leftbound, Random.Range(_lowerbound,_upperbound), 0f);
                 
             }
             else //From Right
             {
-                transform.position = new Vector3(_rightbound, 0f, 0f);
+                transform.position = new Vector3(_rightbound, Random.Range(_lowerbound, _upperbound), 0f);
                
             }
             
@@ -101,6 +103,8 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     }
     private void Move() 
     {
+        float dirChangeTime = .5f;
+
         transform.Translate(Vector3.right * _speed * Time.deltaTime);
         transform.Translate(Vector3.up * frequency * _upDir* Time.deltaTime);
         if (transform.position.y > amplitude && _upDir == 1)
@@ -113,15 +117,17 @@ public class BuzzSiblings : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             _upDir = 1;
             CheckIsWaiting();
         }
-        if (transform.position.x < _leftbound) 
+        if (transform.position.x < _leftbound && Time.time > _dirChangeAcc) 
         {
             _dir = 0;
             _speed *= -1;
+            _dirChangeAcc = Time.time + dirChangeTime;
         }
-        else if(transform.position.x > _rightbound)
+        else if(transform.position.x > _rightbound && Time.time > _dirChangeAcc)
         {
             _dir = 1;
             _speed *= -1;
+            _dirChangeAcc = Time.time + dirChangeTime;
         }
 
     }

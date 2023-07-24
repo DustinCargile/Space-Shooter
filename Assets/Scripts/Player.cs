@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Animator _animation;
     [SerializeField]
-    private GameObject _prefabLaser, _prefabTriple,_prefabRocket, _shieldVisualizer, _prefabVulcan,_gravityVisualizer;
+    private GameObject _prefabLaser, _prefabTriple,_prefabTriVulcan, _prefabRocket, _shieldVisualizer, _prefabVulcan,_gravityVisualizer;
     private Vector3 _laserOffset = new Vector3(0, 1.3f, 0);
     private Vector3 _tripleshotOffset = new Vector3(-.53f, .4f, 0);
     private Vector3 _rocketOffset = new Vector3(-.48f, 0, 0);
@@ -205,15 +205,19 @@ public class Player : MonoBehaviour
         _fireTimer = Time.time + _fireRate;
         GameObject laser;
         //_laserOffset *= -1;
-        if (_isTripleShotEnabled)
+        if (_isTripleShotEnabled && _isVulcanEnabled) 
         {
-            laser = Instantiate(_prefabTriple, transform.position + _tripleshotOffset, Quaternion.identity);
+            laser = Instantiate(_prefabTriVulcan, transform.position + _laserOffset, Quaternion.identity);
         }
-        else if (_isVulcanEnabled) 
+        else if (_isVulcanEnabled)
         {
             laser = Instantiate(_prefabVulcan, transform.position + _laserOffset, Quaternion.identity);
         }
-        else 
+        else if (_isTripleShotEnabled)
+        {
+            laser = Instantiate(_prefabTriple, transform.position + _tripleshotOffset, Quaternion.identity);
+        }        
+        else
         {
             laser = Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
         }
