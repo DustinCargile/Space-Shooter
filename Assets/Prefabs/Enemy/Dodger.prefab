@@ -257,7 +257,7 @@ MonoBehaviour:
   _speed: 5
   _speedBoost: 10
   _health: 2
-  _spawnWeight: 100
+  _spawnWeight: 10
   _upperbound: 9.88
   _lowerbound: -9.88
   _timeDelay: 0.3

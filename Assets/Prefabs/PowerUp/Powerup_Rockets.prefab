@@ -246,7 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _powerupID: 6
-  _spawnWeight: 10
+  _spawnWeight: 25
   _powerupSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
   _destroySound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _prefabDestroyAnim: {fileID: 7928391933340435408, guid: 79ffbdc0b9070d0429c246730eacb01a, type: 3}

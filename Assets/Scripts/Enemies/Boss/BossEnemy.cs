@@ -31,7 +31,7 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
 
     private bool _lowSine = false;
     private bool _isPursuingPlayer = false;
-
+    private bool _didAnElectricalAttackLast = false;
     private SpriteRenderer spriteRenderer;
     [SerializeField]
     private int _regularHitCounter = 5;
@@ -48,6 +48,8 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     [SerializeField]
     private float _speed = 5f;
 
+    [SerializeField]
+    private float _chargeTime = 1.75f;
 
     private float _dirChangeAcc = -1;
 
@@ -287,15 +289,27 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
         
         if (rnd == 0)
         {
+            _didAnElectricalAttackLast = false;
             TransitionToActivateTeethState();
         }
         if (rnd == 1)
         {
+            _didAnElectricalAttackLast = false;
             TransitionToChargeState();
         }
-        if (rnd == 2) 
+        if (rnd == 2 ) 
         {
-            TransitionToElectricalChargeState();
+            if (!_didAnElectricalAttackLast)
+            {
+                _didAnElectricalAttackLast = true;
+                TransitionToElectricalChargeState();
+            }
+            else 
+            {
+                MakeDecision();
+            }
+            
+
         }
         
     }
@@ -313,7 +327,7 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     }
     IEnumerator IdleTimer() 
     {
-        float rnd = Random.Range(0f, 6f);
+        float rnd = Random.Range(1f, 6f);
         yield return new WaitForSeconds(rnd);
         if (_canStart) 
         {
@@ -477,7 +491,7 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     IEnumerator ChargingPowerShotTimer() 
     {
         _laserCharge.SetActive(true);
-        yield return new WaitForSeconds(1.15f);
+        yield return new WaitForSeconds(_chargeTime);
         int r = Random.Range(0, 2);
         if (r == 0)
         {
@@ -571,7 +585,8 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
     }
     private void TransitionToElectricalDischargeState() 
     {
-        _speed = 11f;
+
+        _speed = 11f * ChooseLeftOrRight();
         _currentState = State.ElectricAttack;
         _electricalDischargeFX.SetActive(true);
         _isShootable = false;
@@ -580,6 +595,20 @@ public class BossEnemy : MonoBehaviour, ISpawnableEnemy, IDamagable, ITargetable
         stateMachine.SetState(elecAtkState);
         StartCoroutine(ElectricAttackRoutine());
     }
+    private int ChooseLeftOrRight() 
+    {
+        int multiplier = Random.Range(-1, 2);
+        if (multiplier == 0)
+        {
+            ChooseLeftOrRight();
+        }
+        else 
+        {
+            return multiplier;
+        }
+        return 1;
+    }
+        
     IEnumerator ElectricAttackRoutine() 
     {
         yield return new WaitForSeconds(10f);

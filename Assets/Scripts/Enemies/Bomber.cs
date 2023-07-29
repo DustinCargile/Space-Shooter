@@ -75,8 +75,8 @@ public class Bomber : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     // Update is called once per frame
     void Update()
     {
-        
-        transform.position = Vector3.MoveTowards(transform.position, _targetPos, _speed*Time.deltaTime);
+
+        if (!_isDead) { transform.position = Vector3.MoveTowards(transform.position, _targetPos, _speed * Time.deltaTime); }
         
         if (transform.position == _targetPos)
         {
@@ -198,6 +198,7 @@ public class Bomber : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     {
         if (!_isDead) 
         {
+            _isDead = true;
             _spawnManager.KilledEnemy();
             if (_player == null) { Debug.Log("Could not find Player Object!"); }
             else
@@ -220,7 +221,7 @@ public class Bomber : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             }
 
 
-            _isDead = true;
+            
             _speed = 1;
             _audioSource.PlayOneShot(_explosionSound);
             Destroy(gameObject, 2.41f);

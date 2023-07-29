@@ -60010,8 +60010,9 @@ MonoBehaviour:
   _isShootable: 0
   _isCritical: 0
   healthBar: {fileID: 6207258162043599722}
-  _health: 1000
+  _health: 350
   _speed: 5
+  _chargeTime: 1.6
   _spawnWeight: 100
   _explosionFX: {fileID: 5756717860891794051, guid: 390a30c3f1524cb4e8c450834aa83455, type: 3}
   _critPartFX: {fileID: 707979450}

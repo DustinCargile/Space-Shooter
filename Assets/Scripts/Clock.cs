@@ -38,14 +38,7 @@ public class Clock : MonoBehaviour
         
         _clock.text = string.Format("{0:d2}:{1:d2}:{2:d2}",_minutes,_seconds,_milliseconds);
 
-        if (Input.GetKeyDown(KeyCode.O)) 
-        {
-            _timer.Multiplier *= 2;
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            _timer.Multiplier /= 2;
-        }
+       
 
     }
 }

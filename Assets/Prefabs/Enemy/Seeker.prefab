@@ -52,6 +52,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6423387434507025035}
     m_Modifications:
+    - target: {fileID: 7192602356268122756, guid: 9094e09264c74ec4b9b5026e6626bba1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8289310810963485248, guid: 9094e09264c74ec4b9b5026e6626bba1, type: 3}
       propertyPath: m_Name
       value: Seeker_Enemy

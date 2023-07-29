@@ -27,7 +27,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<GameObject> _gravityConnections = new List<GameObject>();
     [SerializeField]
-    private float _fireRate = 2f;
+    private float _fireRate = .05f;
+    private float _noAmmoFireRate = 1f;
     private float _fireTimer = -1f;
 
     [SerializeField]
@@ -118,16 +119,20 @@ public class Player : MonoBehaviour
         
         Calculate_Movement();
 
-        
+
         if (_ammo > 0 && Input.GetKeyDown(KeyCode.Space) && (Time.time > _fireTimer))
         {
             FireLaser();
+        }
+        else if (_ammo <= 0 && Input.GetKeyDown(KeyCode.Space) && Time.time > _fireTimer) 
+        {
+            FireSlowLaser();
         }
         if (_rocketAmmo > 0 && Input.GetKeyDown(KeyCode.R) && (Time.time > _fireTimer))
         {
             FireRocket();
         }
-        if (Input.GetKeyDown(KeyCode.G)) { Damage(1); } //for testing purposes
+       
         CalculateGravityVisualizer();
     }
     
@@ -193,6 +198,21 @@ public class Player : MonoBehaviour
         if (transform.position.x > rightbounds)
         {
             transform.position = new Vector3(leftbounds, transform.position.y, 0);
+        }
+    }
+    private void FireSlowLaser() 
+    {
+        _fireTimer = Time.time + _noAmmoFireRate;
+
+        GameObject laser;
+        laser = Instantiate(_prefabLaser, transform.position + _laserOffset, Quaternion.identity);
+        if (_audioSource == null)
+        {
+            Debug.Log("Could not find Player Audio Source!");
+        }
+        else
+        {
+            _audioSource.PlayOneShot(_laserSound);
         }
     }
     private void FireLaser() 

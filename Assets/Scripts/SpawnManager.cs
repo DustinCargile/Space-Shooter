@@ -129,7 +129,7 @@ public class SpawnManager : MonoBehaviour
             }
             if (randPowerup.SpawnWeight >= spawnNumber)
             {
-                Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 9.12f, 0);
                 GameObject powerup = Instantiate(_powerupPrefab[r], posToSpawn, Quaternion.identity);
                 powerup.transform.SetParent(_powerupContainer.gameObject.transform, true);
                 _spawnedPowerupCount++;

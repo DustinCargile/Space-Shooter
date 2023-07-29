@@ -157,6 +157,7 @@ public class UIManager : MonoBehaviour
     public void LevelComplete() 
     {
         _restartText.gameObject.SetActive(true);
+        _clock.StopTimer();
     }
     public void ActivateSpeedBoostOverheat() 
     {
@@ -196,7 +197,7 @@ public class UIManager : MonoBehaviour
     }
     public void ChangeBoostColorGood(float timeInSeconds)
     {
-        Debug.Log("called good color");
+        
         if (_boostFill != null)
         {
             _isChangingGood = true;
@@ -237,11 +238,11 @@ public class UIManager : MonoBehaviour
         while (objectToFade.isActiveAndEnabled) 
         {
             timer += timeInSeconds * Time.deltaTime;
-            //Debug.Log("Fadein reached while reached");
+           
             
 
             objectToFade.alpha = Mathf.Lerp(0.0f, 1.0f, timer);
-            //Debug.Log(timer);
+           
             if (objectToFade.alpha >= 1) 
             {
                 timer = 0;               

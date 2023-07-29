@@ -25,6 +25,7 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     private SpawnManager _spawnManager;
 
     private BoxCollider2D _boxCollider;
+    private CapsuleCollider2D _capsuleCollider2D;
 
     private float _waitTime = .5f;
     private Animator _animator;
@@ -63,6 +64,7 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
         _player = FindObjectOfType<Player>();
         _animator = GetComponent<Animator>();
         _boxCollider = GetComponent<BoxCollider2D>();
+        _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         _audioSource = GetComponent<AudioSource>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _material = GetComponent<SpriteRenderer>().material;
@@ -248,11 +250,19 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
             {
                 _boxCollider.enabled = false;
             }
+            if (_capsuleCollider2D == null)
+            {
+                Debug.Log("Capsule Collider could not be found!");
+            }
+            else 
+            {
+                _capsuleCollider2D.enabled = false;
+            }
            
 
           
             _isDead = true;
-            _speed = 1;
+            _speed = 0;
             _audioSource.PlayOneShot(_explosionSound);
             Destroy(gameObject, 2.41f);
         }
@@ -260,6 +270,7 @@ public class SpaceWorm : MonoBehaviour,ISpawnableEnemy,IDamagable,ITargetable
     }
     IEnumerator ReachedTarget()
     {
+       
         _animator.ResetTrigger("Charge");
         _animator.SetTrigger("Normal");
         

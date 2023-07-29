@@ -22,7 +22,7 @@ MonoBehaviour:
   - {fileID: 4454727904817960277, guid: 847ae7932ddb93f4594b9152631f9648, type: 3}
   enemyFrequency: 3.5
   maxEnemies: 40
-  enemySpawnAmount: 2
+  enemySpawnAmount: 1
   powerups:
   - {fileID: 5536050502470600033, guid: 64450f3d2e77ac644baff9e4405d0720, type: 3}
   - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
@@ -32,6 +32,13 @@ MonoBehaviour:
   - {fileID: 6596633691297458768, guid: ced41dcdd91e55344994dbdafa2eb088, type: 3}
   - {fileID: 3935492248638113234, guid: 4ede16afb91940d4882fb191fab2ed0c, type: 3}
   - {fileID: 2109771534997508891, guid: 2d00977edb6371d4aaf7292d366ad243, type: 3}
+  - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
+  - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
+  - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
+  - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
+  - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
+  - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
+  - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
   powerupFrequency: 2.5
   maxPowerups: 999
   powerupSpawnAmount: 1
