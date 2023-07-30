@@ -28,6 +28,7 @@ MonoBehaviour:
   - {fileID: 3935492248638113234, guid: 4ede16afb91940d4882fb191fab2ed0c, type: 3}
   - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
   - {fileID: 7508594213669659929, guid: acc22368155547c4e96facf3bde726cb, type: 3}
+  - {fileID: 7774744634008993207, guid: 8efdd77c2a5314645907f90b37bd4296, type: 3}
   powerupFrequency: 1.5
   maxPowerups: 999
   powerupSpawnAmount: 1
